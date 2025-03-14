@@ -4,10 +4,11 @@ from . import views
 urlpatterns = [
     path('home', views.home, name='home'),
     path('profile', views.profile, name='profile'),
-    path('signup', views.signup, name='signup'),
-    path('login', views.login, name='login'),
+    path('signup', views.signup_view, name='signup'),
+    path('login', views.login_view, name='login'),
     path('aboutus', views.aboutus, name='aboutus'),
-    
+    path('logout', views.logout_view, name='logout'),
+    path('changepassword', views.change_password_view, name='changepassword'),
 ]
 
 from django.conf import settings

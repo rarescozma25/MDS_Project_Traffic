@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -302,25 +301,39 @@
             {% load static %}
             <img src="{% static 'images/logo_transparent.png' %}" alt="">
             <form method = "post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
             
                 <div class="form-name">Signing you up to <br><span>S</span>k<span>i</span>b<span>i</span>d<span>i</span> Traffic:</div>
                 <div class="camp">
                     Username
+                    {{ form.username }}
+                    {{ form.username.errors }}
                 </div>
                 <div class="camp">
                     Nume
+                    {{ form.first_name }}
+                    {{ form.first_name.errors }}
                 </div>
                 <div class="camp">
                     Prenume
+                    {{ form.last_name }}
+                    {{ form.last_name.errors }}
                 </div>
                 <div class="camp">
                     Adresa mail
+                    {{ form.email }}
+                    {{ form.email.errors }}
                 </div>
                 <div class="camp">
                     Parola
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
                 </div>
                 <div class="camp">
                     Confirma parola
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
                 </div>
                 <div class="button-container">
                     <button type="submit">Sign Up</button>
@@ -360,4 +373,36 @@
         }
     </script>
 </body>
-</html>
+</html> 
+
+
+
+{% comment %} 
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.first_name.id_for_label }}">First Name</label>
+        {{ form.first_name }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+        {{ form.last_name }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Email</label>
+        {{ form.email }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.password1.id_for_label }}">Password</label>
+        {{ form.password1 }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+        {{ form.password2 }}
+    </div>
+    <button type="submit">Sign Up</button>
+</form> {% endcomment %}

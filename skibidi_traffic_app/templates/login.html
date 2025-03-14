@@ -305,14 +305,24 @@
             {% load static %}
             <img src="{% static 'images/logo_transparent.png' %}" alt="">
             <form method = "post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
             
                 <div class="form-name">Log in to <br><span>S</span>k<span>i</span>b<span>i</span>d<span>i</span> Traffic:</div>
                 <div class="camp">
                     Username
+                    {{ form.username }}
+                    {{ form.username.errors }}
                 </div>
                 
                 <div class="camp">
                     Parola
+                    {{ form.password }}
+                    {{ form.password.errors }}
+                </div>
+                <div class="camp">
+                    {{ form.ramane_logat.label_tag }} {{ form.ramane_logat }}
+                    {{ form.ramane_logat.errors }}
                 </div>
                 <div class="camp">
                     <a href="{% url 'signup' %}">Don't have an account? Sign up!</a>

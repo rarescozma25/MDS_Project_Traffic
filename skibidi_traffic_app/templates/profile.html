@@ -669,15 +669,18 @@
         <div class="user-info">
             {% load static %}
             <img src="{% static 'images\no_profile_pic.jpg' %}" alt="">
-            <div id="username">[username]</div>
-            <div id="nume-prenume">[Nume Prenume Prenume2]</div>
-            <div id="email">[numeprenume@gmail.com]</div> 
+            <div id="username">{{ request.user.username }}</div>
+            <div id="nume-prenume">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+            <div id="email">{{ request.user.email }}</div> 
+            <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'changepassword' %}">Change Password</a>
+
         </div>
         <div class="not-user-info">
             <div class="welcome">
                 <!--<h1>S<span>k</span>i<span>b</span>i<span>d</span>i Traffic</h1>-->
                 <h1><span>S</span>k<span>i</span>b<span>i</span>d<span>i</span> Traffic</h1>
-                <h3>Welcome, [username]!</h3>
+                <h3>Welcome, {{ request.user.username }}!</h3>
             </div>
         
             <div class="intersectii">
