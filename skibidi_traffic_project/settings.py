@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -75,6 +77,19 @@ WSGI_APPLICATION = 'skibidi_traffic_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE':   'django.db.backends.postgresql',          
+        'NAME':     os.getenv('DB_NAME',     'postgres'),      
+        'USER':     os.getenv('DB_USER',     ''),              
+        'PASSWORD': os.getenv('DB_PASSWORD', ''),          
+        'HOST':     os.getenv('DB_HOST',     'localhost'),  
+        'PORT':     os.getenv('DB_PORT',     '5432'),          
+        'OPTIONS': {
+            'options': '-c search_path=django,public',    
+        },
+    }
+}
 
 
 
@@ -139,7 +154,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 #STATIC_ROOT = "static/"
 
-try:
-    from .settings_local import *
-except ImportError:
-    pass
+
