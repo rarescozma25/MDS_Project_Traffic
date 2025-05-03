@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -77,17 +79,18 @@ WSGI_APPLICATION = 'skibidi_traffic_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE':   'django.db.backends.postgresql',          
+        'NAME':     os.getenv('DB_NAME',     'postgres'),      
+        'USER':     os.getenv('DB_USER',     ''),              
+        'PASSWORD': os.getenv('DB_PASSWORD', ''),          
+        'HOST':     os.getenv('DB_HOST',     'localhost'),  
+        'PORT':     os.getenv('DB_PORT',     '5432'),          
         'OPTIONS': {
-            'options': '-c search_path=django,public',  # Include schema django aici
+            'options': '-c search_path=django,public',    
         },
-        'NAME': 'postgres',   # Numele bazei de date
-        'USER': 'postgres.qjtvtaymqpkfbljcnknq',
-        'PASSWORD': 'ProiectMDS123',
-        'HOST': 'aws-0-eu-central-1.pooler.supabase.com',
-        'PORT': '6543',
     }
 }
+
 
 
 # Password validation
@@ -150,3 +153,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # # Calea completă pe server către directorul media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 #STATIC_ROOT = "static/"
+
+
