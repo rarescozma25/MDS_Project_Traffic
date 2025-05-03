@@ -1,0 +1,42 @@
+#logo{
+    max-height: 100%;
+}
+
+.behind_navbar{
+    height: 70px; 
+    width: 100%;
+}
+.drawing_container{
+    width:fit-content;
+    height:fit-content;
+    display:flex;
+    margin-bottom: 100px;
+}
+#sidebar {
+    width: 200px;
+    
+    padding: 10px;
+    background: #f0f0f0;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .item {
+    padding: 8px;
+    background: #ddd;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #aaa;
+  }
+  canvas {
+    flex-grow: 1;
+    background: #fff;
+    display: block;
+    cursor: crosshair;
+    max-height: 1000px;
+    max-width: 1400px;
+    border: 1px solid black;
+    
+  }
+

@@ -9,6 +9,8 @@ urlpatterns = [
     path('aboutus', views.aboutus, name='aboutus'),
     path('logout', views.logout_view, name='logout'),
     path('changepassword', views.change_password_view, name='changepassword'),
+    path('game', views.game, name='game'),
+    path('create', views.create, name='create'),
 ]
 
 from django.conf import settings

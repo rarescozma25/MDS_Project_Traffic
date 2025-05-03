@@ -1,0 +1,46 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skibidi Traffic - Game</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <nav>
+        <ul class="sidebar">
+            <li onclick=hideSidebar()><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></li>
+            
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign up</a></li>
+            <li><a href="{% url 'profile' %}">My account</a></li>
+            <li><a href="{% url 'aboutus' %}">About us</a></li>
+        </ul>
+        <ul>
+            {% load static %}
+            <li><a href="{% url 'home' %}"><img id = "logo" src="{% static 'images/logo.jpg' %}" alt="SkibidiTraffic"></a></li>
+            <li class="hideOnMobile"><a href="{% url 'home' %}">Home</a></li>
+            <li class="hideOnMobile"><a href="{% url 'game' %}">Play</a> </li>
+            <li class="hideOnMobile"><a href="{% url 'create' %}">Create</a> </li>
+            {% if user.is_authenticated %}
+                <li class="hideOnMobile"><a href="{% url 'profile' %}">My account</a></li>
+                <li class="hideOnMobile"><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li class="hideOnMobile"><a href="{% url 'login' %}">Login</a></li>
+                <li class="hideOnMobile"><a href="{% url 'signup' %}">Sign up</a></li>
+            {% endif %}
+
+            <li class="hideOnMobile"><a href="{% url 'aboutus' %}">About us</a></li>
+            <li class="menu-button"onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+        </ul>
+    </nav>
+
+    <footer>
+        <p>© Skibidi Traffic 2025 - All rights reserved</p>
+    </footer>
+</body>
+    

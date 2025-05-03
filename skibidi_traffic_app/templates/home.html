@@ -1,314 +1,13 @@
+{%load static%}
 
-
-<!-- futuristic_ai.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skibidi Traffic - Home</title>
-    <style>
-        *{
-            margin:0;
-            padding:0;
-
-        }
-        body{
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            /*background-color:rgb(84, 133, 183);*/
-            /*background-color:rgb(24, 78, 87);*/
-            /*background-color:rgba(0, 87, 113, 0.25);*/
-
-            background-image: url('/static/images/image.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
-            backdrop-filter: blur(2px);
-            min-height:100vh;
-            
-            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), 
-            url('/static/images/pexels-rudy-cummings-495875188-22626877.jpg') center/cover no-repeat;
-
-            /*background: linear-gradient(to right, rgba(255, 0, 0, 0.3), rgba(0, 0, 255, 0.2)), 
-            url('/static/images/image.png') center/cover no-repeat;*/
-            
-            position:relative;
-        }
-        
-        nav{
-            background-color: white;
-            box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
-
-        }
-        nav ul{
-            width: 100%;
-            list-style: none;
-            display: flex;
-            justify-content: flex-end;
-            align-items:center;
-        }
-        nav li{
-            height: 50px;
-        }
-        nav a{
-            height: 100%;
-            padding: 0 30px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            color: black;
-
-        }
-        nav a:hover{
-            /*background-color: rgb(182, 222, 182);
-            color:rgba(255, 77, 46, 0.68);*/
-
-            background-color: rgb(0, 10, 34);
-            background-color: #0097B2;
-            /*color:rgb(177, 219, 232);*/
-            color:rgb(213, 234, 241);
-            color:white;
-            
-            /*box-shadow: 3px 3px 5px rgba(0,0,0,0.1);*/
-            border-radius: 35px;
-            box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
-        }
-        nav li:first-child{
-            margin-right:auto;
-        }
-        nav li:first-child a:hover{
-            background-color: white;
-            box-shadow: 0 0 0;
-            
-        }
-        .sidebar{
-            position:fixed;
-            top:0;
-            right:0;
-            min-height:100vh;
-            width:250px;
-            background-color: rgba(255, 255, 255, 0.1);
-            box-shadow: -10px 0 10px rgba(0,0,0,0.1);
-            display:none;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            backdrop-filter: blur(10px);
-            z-index: 999;
-        }
-        .sidebar li{
-            width:100%;
-
-        }
-        .sidebar a{
-            width:100%;
-            
-        }
-        ul.sidebar li:first-child{
-            display:flex;
-            justify-content:flex-end;
-            align-items:center;
-            
-        }
-        
-        ul.sidebar li:first-child svg {
-            margin-right: 10%; /* Muta SVG-ul la dreapta */
-        } 
-        .menu-button{
-            display:none;
-        }
-        @media(max-width: 800px)
-        {
-            .hideOnMobile{
-                display: none;
-            }
-            .menu-button{
-                display:block;
-            }
-        }
-        @media(max-width: 400px)
-        {
-            .sidebar{
-                width: 100%;
-            }
-        }
-        .welcome{
-            margin-top:40px;
-            margin-bottom: 50px;
-        }
-        .welcome h1{
-            text-align: center;
-            font-size: 90px;
-            color:white;
-            
-        }
-        .welcome h1 span{
-            color: green;
-            color:#0097B2;
-            
-        }
-        #T{
-            color:red;
-            color:#0097B2
-        }
-        .welcome h3{
-            margin-top:-10px;
-            text-align: center;
-            color:rgba(222, 247, 255, 0.86);
-        }
-
-        footer{
-            /*position:fixed;*/
-            width:100%;
-            background-color: #1E1E2E;
-            height: 60px;
-            
-            color:white;
-            
-            display:flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            bottom: 0;
-            
-        }
-        .intersectii{
-            justify-self:center;
-            margin-top:30px;
-            
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content: center;
-            width:80%;
-        }
-        
-        .intersectii > h3{
-            
-            font-weight:500;
-            margin-bottom: 10px;
-            /* background-color: #E0E0E0;*/
-            width:100%;
-            text-align:left;
-            
-        }
-        .intro{
-            
-            background-color:#0097B2;
-            background-color: rgba(0, 151, 178, 0.8); /*0.52*/
-            padding: 10px;
-            border-radius: 20px;
-            margin-bottom:30px;
-            box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
-            background: radial-gradient(ellipse, rgb(94, 192, 209),rgba(43, 195, 222, 0.8),rgba(0, 151, 178, 0.8));
-            transition: transform 0.3s ease-in;
-        }
-        .intro > h3{
-            font-weight:400;
-            margin-bottom: 10px;
-            
-            
-            width:100%;
-            text-align:left;
-        }
-        .intro:hover{
-            transform: scale(1.02);
-        }
-        #explore{
-            margin-top:10px;
-            text-align:center;
-            font-size: 22px;
-            margin-bottom: 30px;
-            box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
-            background: radial-gradient(circle,rgba(0, 151, 178, 0.8), transparent);
-            color:white;
-            padding:10px 0 10px 0;
-            
-        }
-        .intersectii-cards{
-            
-            width:100%;
-            height:auto;
-            /*background-color: #0F9D58;*/
-            /*background-color: rgba(51, 53, 57, 0.88); /*0.88 la opacitate e ok*/
-            /*background-color: #0097B2;*/
-            border-radius:25px;
-            display: grid;
-            grid-template-columns: repeat(3, 33%);
-            grid-template-rows: repeat(2, auto);
-            /*gap:10px;*/
-            justify-items: center;
-            align-items: center;
-            margin-bottom:30px;
-        }
-        @media(max-width:1000px)
-        {
-            .intersectii-cards{
-                display:grid;
-                grid-template-columns: repeat(2, 50%);
-                gap:5px;
-                justify-items: center;
-                align-items:center;
-            }
-            .card{
-                height:150px;
-                width:150px;
-                border: 1px solid black;
-            }
-        }
-        @media(max-width:670px)
-        {
-            .intersectii-cards{
-                display:flex;
-                flex-direction:column;
-            }
-        }
-        .card{
-            padding:10px;
-            margin:20px;
-            /*background-color: #2C3E50;*/
-            width:250px;
-            height:auto;
-            border-radius:30px;
-            display:flex;
-            flex-direction: column;
-            align-items:center;
-            gap: 5px;
-            background: blur(10px);
-            /*transition: transform 0.3s ease-in;*/
-            transition: transform 0.3s ease-in;
-            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
-        }
-
-        .card > img{
-            max-width:90%;
-            border-radius: 50%;
-            
-        }
-
-        .card p{
-            /*color:white;*/
-            color:rgb(238, 250, 255);
-            font-size: 25px;
-            /*font-weight:400;*/
-            font-weight: 700;
-
-        }
-        #logo{
-            max-height: 100%;
-        }
-
-        .card:hover{
-            transform: scale(1.05);
-            transform: translateY(-10px);
-            cursor: pointer;
-            background-color:rgba(0, 55, 65, 0.8);
-            background-color: rgba(51, 44, 52, 1);
-            box-shadow: 7px 7px 5px rgba(0,0,0,0.3);
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 </head>
 <body>
     <nav>
@@ -323,9 +22,10 @@
         </ul>
         <ul>
             {% load static %}
-            <li><a href="#"><img id="logo" src="{% static 'images/logo.jpg' %}" alt="SkibidiTraffic"></a></li>
+            <li><a href="{% url 'home' %}"><img id = "logo" src="{% static 'images/logo.jpg' %}" alt="SkibidiTraffic"></a></li>
             <li class="hideOnMobile"><a href="{% url 'home' %}">Home</a></li>
-            
+            <li class="hideOnMobile"><a href="{% url 'game' %}">Play</a> </li>
+            <li class="hideOnMobile"><a href="{% url 'create' %}">Create</a> </li>
             {% if user.is_authenticated %}
                 <li class="hideOnMobile"><a href="{% url 'profile' %}">My account</a></li>
                 <li class="hideOnMobile"><a href="{% url 'logout' %}">Logout</a></li>
@@ -333,27 +33,35 @@
                 <li class="hideOnMobile"><a href="{% url 'login' %}">Login</a></li>
                 <li class="hideOnMobile"><a href="{% url 'signup' %}">Sign up</a></li>
             {% endif %}
-            
-            <li class="hideOnMobile"><a href="{% url 'aboutus' %}">About us</a></li>
-            <li class="menu-button" onclick="showSidebar()">
-                <a href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
-                        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
-                    </svg>
-                </a>
-            </li>
-        </ul>        
-    </nav>
 
-    <div class="welcome">
-        <!--<h1>S<span>k</span>i<span>b</span>i<span>d</span>i Traffic</h1>-->
-        <h1><span>S</span>k<span>i</span>b<span>i</span>d<span>i</span> Traffic</h1>
-        <h3>- create and optimize your intersection using AI -</h3>
-    </div>
+            <li class="hideOnMobile"><a href="{% url 'aboutus' %}">About us</a></li>
+            <li class="menu-button"onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+        </ul>
+    </nav>
+    <div class="banner">
+        <img src="/static/images/logo skibidi provizoriu (2).png" alt=""> 
+        <h1>Your AI companion for managing traffic.<br> Create and optimize your intersection using AI.</h1>
+        <h3>Your AI companion <br>for managing traffic.<br> Create and optimize <br>your intersection using AI.</h3>
+    </div> 
+    
 
     <div class="intersectii">
         <div class="intro">
-            <h3>Take control of your city’s traffic flow with Skibidi Traffic. Create and customize your own traffic intersections, and let AI optimize traffic light timings for efficiency. Whether you're a city planner, transportation enthusiast, or just curious, our platform allows you to experiment with real-world scenarios and see immediate results. Challenge the AI or fine-tune your settings to create the perfect traffic flow. </h3>
+            <div class="about_us bulina_semafor" onclick="window.location.href='{% url 'aboutus' %}'">
+                <h3>🚦 About Us</h3>
+                <h5>We’re a young and passionate team on a mission to untangle traffic, one intersection at a time. Our love for AI and traffic lights brought us 
+                    here—and we’re determined to help Nicușor free Bucharest! While he battles the real estate mafia, we handle the signal timings.</h5>
+            </div>
+            <div class="about_skibidi_traffic bulina_semafor" onclick="scrollToExplore()">
+                <h3>🚗 About Skibidi Traffic</h3>
+                <h5>On this site, you can explore pre-built intersections like Piața Romană, Universitate, or Titan, and watch as our AI calculates 
+                    the optimal green light intervals to maximize vehicle flow. Feeling creative? Log in and design your own intersections!</h5>
+            </div>
+            <div class="game bulina_semafor" onclick="window.location.href='{% url 'game' %}'">
+                <h3>🤖 Are you ready to lose, human?</h3>
+                <h5>And if you're truly obsessed with traffic (we won't judge), challenge our AI in a fun mini-game where you take control of 
+                    an intersection and try to beat the algorithm at its own game!</h5>
+            </div>
         </div>
         
         <h3 id="explore">Explore our intersections or create your own:</h3>
@@ -411,7 +119,13 @@
             const sidebar = document.querySelector('.sidebar')
             sidebar.style.display = 'none'
         }
-          
+
+        function scrollToExplore() {
+            const section = document.getElementById("explore");
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth" });
+            }
+        }
     </script>
 </body>
 </html>
