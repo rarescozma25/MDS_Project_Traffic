@@ -81,6 +81,7 @@ WSGI_APPLICATION = 'skibidi_traffic_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+<<<<<<< HEAD
 DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.postgresql',          
@@ -94,6 +95,9 @@ DATABASES = {
         },
     }
 }
+=======
+
+>>>>>>> 7dd25cd (Ascund settings_local, ignore .gitignore etc)
 
 
 
@@ -157,3 +161,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # # Calea completă pe server către directorul media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 #STATIC_ROOT = "static/"
+
+try:
+    from .settings_local import *
+except ImportError:
+    pass
