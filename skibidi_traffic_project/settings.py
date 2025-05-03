@@ -75,19 +75,7 @@ WSGI_APPLICATION = 'skibidi_traffic_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            'options': '-c search_path=django,public',  # Include schema django aici
-        },
-        'NAME': 'postgres',   # Numele bazei de date
-        'USER': 'postgres.qjtvtaymqpkfbljcnknq',
-        'PASSWORD': 'ProiectMDS123',
-        'HOST': 'aws-0-eu-central-1.pooler.supabase.com',
-        'PORT': '6543',
-    }
-}
+
 
 
 # Password validation
@@ -150,3 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # # Calea completă pe server către directorul media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 #STATIC_ROOT = "static/"
+
+try:
+    from .settings_local import *
+except ImportError:
+    pass
