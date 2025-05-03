@@ -1,0 +1,282 @@
+
+@media(max-width:670px)
+{
+    .banner{
+        display:flex;
+        flex-direction:column;
+        justify-content: center;
+        align-items: center;
+    }
+    .banner > h1{
+        display: none;
+    }
+    .banner > h3{
+        display: flex;
+    }
+}
+.banner{
+    position: relative;
+    background-image: url('/static/images/pexels-rudy-cummings-495875188-22626877.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    max-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+@media(min-width:671px)
+{
+    .banner > h3{
+        display: none;
+    }
+}
+.banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45); 
+    z-index: 1;
+}
+
+
+/* DE PUS UN GRADIENT PE BACKGROUND BODY!*/
+/* content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 50%);
+  pointer-events: none; permite interacțiunea cu elementele de dedesubt */
+
+
+.banner > * {
+    position: relative;
+    z-index: 2; 
+}
+
+.banner > img{
+    padding-top: 3%;
+    padding-left: 2%;
+    width: 50%;
+    
+}
+.banner > h1{
+    padding-top: 3%;
+    padding-left: 2%;
+    width:50%;
+    color:white;
+    justify-content: center;
+
+}
+.intersectii{
+    justify-self:center;
+    margin-top:30px;
+    
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content: center;
+    width:80%;
+}
+
+.intersectii > h3{
+    
+    font-weight:500;
+    margin-bottom: 10px;
+    /* background-color: #E0E0E0;*/
+    width:100%;
+    text-align:left;
+    
+}
+.intro{
+    margin-top:70px;
+    width:100%;
+    border:10px solid rgba(0, 0, 0, 0.822);
+    background-color: rgba(0, 0, 0, 0.705);
+    
+    padding: 10px;
+    border-radius: 50px;
+    margin-bottom:80px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+    /* background: radial-gradient(ellipse, rgb(94, 192, 209),rgba(43, 195, 222, 0.8),rgba(0, 151, 178, 0.8)); */
+    transition: transform 0.3s ease-in;
+    display: grid;
+    grid-template-columns: repeat(3,25%);
+    grid-template-rows: repeat(1, 315px);
+    gap: 30px;
+    justify-content: center;
+
+    background-color: #444;
+    background-image:
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 4px 4px;
+    /* border-radius: 50px;
+    padding: 20px; */
+}
+
+.bulina_semafor{
+    max-width: 315px;
+    border-radius: 50%;
+    
+    overflow: hidden;         
+    display: flex;            
+    flex-direction: column;
+    justify-content: center;  
+    align-items: center;     
+    padding: 20px;            
+    text-align: center;  
+    gap:30px;
+
+    transition: transform 0.3s ease-in;
+
+    /* border-radius: 50%;
+    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.2), 
+                inset 0 0 30px rgba(255, 255, 255, 0.1); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; */
+}
+
+.bulina_semafor {
+    position: relative;
+    overflow: hidden;
+}
+
+.bulina_semafor::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.05) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.05) 75%);
+    background-size: 4px 4px;
+    pointer-events: none;
+}
+
+
+
+.about_us{
+    background-color: rgb(149, 23, 23);
+    border: 1px solid rgb(77, 0, 0);/* rgb(161, 0, 0);*/
+    box-shadow: -10px -5px 1px rgba(255, 0, 0, 0.1);
+}
+.about_skibidi_traffic{
+    background-color: rgba(255, 251, 37, 0.884);
+    border: 3px solid rgba(255, 178, 46, 0.774);
+    box-shadow: -5px 5px 1px rgba(255, 0, 0, 0.1);
+}
+.game{
+    background-color: rgb(13, 104, 13);
+    border: 3px solid rgba(0, 102, 3, 0.729);
+    box-shadow: 10px 0 3px rgba(47, 255, 0, 0.1);
+}
+
+/* .intro:hover{
+    transform: scale(1.02);
+} */
+.bulina_semafor:hover{
+    transform:scale(1.05);
+    cursor:pointer;
+}
+#explore{
+    width:125%;
+    margin-top:10px;
+    text-align:center;
+    font-size: 22px;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+    background: radial-gradient(circle,rgba(0, 151, 178, 0.8), transparent);
+    color:white;
+    padding:30px 0 30px 0;
+    margin-bottom: 80px;
+}
+.intersectii-cards{
+    
+    width:100%;
+    height:auto;
+    
+    background-color: rgba(51, 53, 57, 0.88); /*0.88 la opacitate e ok*/
+    
+    border-radius:25px;
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    grid-template-rows: repeat(2, auto);
+    /*gap:10px;*/
+    justify-items: center;
+    align-items: center;
+    margin-bottom:80px;
+}
+@media(max-width:1000px)
+{
+    .intersectii-cards{
+        display:grid;
+        grid-template-columns: repeat(2, 50%);
+        gap:5px;
+        justify-items: center;
+        align-items:center;
+    }
+    .card{
+        height:150px;
+        width:150px;
+        border: 1px solid black;
+    }
+}
+@media(max-width:670px)
+{
+    .intersectii-cards{
+        display:flex;
+        flex-direction:column;
+    }
+}
+.card{
+    padding:10px;
+    margin:20px;
+    /*background-color: #2C3E50;*/
+    background-color: #0097B2;
+    width:250px;
+    height:auto;
+    border-radius:30px;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 5px;
+    background: blur(10px);
+    /*transition: transform 0.3s ease-in;*/
+    transition: transform 0.3s ease-in;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+}
+
+.card > img{
+    max-width:90%;
+    border-radius: 50%;
+    
+}
+
+.card p{
+    /*color:white;*/
+    color:rgb(238, 250, 255);
+    font-size: 25px;
+    /*font-weight:400;*/
+    font-weight: 700;
+
+}
+#logo{
+    max-height: 100%;
+}
+
+.card:hover{
+    transform: scale(1.05);
+    transform: translateY(-10px);
+    cursor: pointer;
+    background-color:rgba(0, 55, 65, 0.8);
+    background-color: rgba(51, 44, 52, 1);
+    box-shadow: 7px 7px 5px rgba(0,0,0,0.3);
+}

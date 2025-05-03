@@ -1,0 +1,273 @@
+
+body{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /*background-color:rgb(84, 133, 183);*/
+    /*background-color:rgb(24, 78, 87);*/
+    /*background-color:rgba(0, 87, 113, 0.25);*/
+
+    background-image: url('/static/images/image.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+    backdrop-filter: blur(2px);
+    min-height:100vh;
+    
+    background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), 
+    url('/static/images/pexels-rudy-cummings-495875188-22626877.jpg') center/cover no-repeat;
+
+    /*background: linear-gradient(to right, rgba(255, 0, 0, 0.3), rgba(0, 0, 255, 0.2)), 
+    url('/static/images/image.png') center/cover no-repeat;*/
+    
+    position:relative;
+    max-width:100%;
+    overflow-x: hidden;
+}
+
+
+.welcome{
+    margin-top:40px;
+    margin-bottom: 50px;
+}
+.welcome h1{
+    text-align: center;
+    font-size: 90px;
+    color:white;
+    
+}
+.welcome h1 span{
+    color: green;
+    color:#0097B2;
+    
+}
+#T{
+    color:red;
+    color:#0097B2
+}
+.welcome h3{
+    margin-top:-10px;
+    text-align: center;
+    color:rgba(222, 247, 255, 0.86);
+}
+
+footer{
+    /*position:fixed;*/
+    width:100%;
+    background-color: #1E1E2E;
+    height: 60px;
+    bottom: 0px;
+    color:white;
+    
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    
+    position: relative;
+    bottom: 0;
+}
+.intersectii{
+    justify-self:center;
+    margin-top:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content: center;
+    width:80%;
+    
+}
+
+.intersectii > h3{
+    
+    font-weight:500;
+    margin-bottom: 10px;
+    /* background-color: #E0E0E0;*/
+    width:100%;
+    text-align:left;
+    
+}
+
+#explore{
+    margin-top:10px;
+    text-align:center;
+    font-size: 22px;
+    margin-bottom: 30px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+    background: radial-gradient(circle,rgba(0, 151, 178, 0.8), transparent);
+    color:white;
+    padding:10px 0 10px 0;
+    
+}
+.intersectii-cards{
+    
+    width:100%;
+    height:auto;
+    /*background-color: #0F9D58;*/
+    /*background-color: rgba(51, 53, 57, 0.88); /*0.88 la opacitate e ok*/
+    /*background-color: #0097B2;*/
+    border-radius:25px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    /*gap:10px;*/
+    justify-items: center;
+    align-items: center;
+    margin-bottom:30px;
+}
+@media(max-width:1000px)
+{
+    .intersectii-cards{
+        display:grid;
+        grid-template-columns: repeat(2, 50%);
+        gap:5px;
+        justify-items: center;
+        align-items:center;
+    }
+    .card{
+        height:150px;
+        width:150px;
+        border: 1px solid black;
+    }
+}
+@media(max-width:670px)
+{
+    .intersectii-cards{
+        display:flex;
+        flex-direction:column;
+    }
+}
+.card{
+    padding:10px;
+    margin:20px;
+    /*background-color: #2C3E50;*/
+    width:250px;
+    height:auto;
+    border-radius:30px;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 5px;
+    background: blur(10px);
+    /*transition: transform 0.3s ease-in;*/
+    transition: transform 0.3s ease-in;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+}
+
+.card > img{
+    max-width:90%;
+    border-radius: 50%;
+    
+}
+
+.card p{
+    /*color:white;*/
+    color:rgb(238, 250, 255);
+    font-size: 25px;
+    /*font-weight:400;*/
+    font-weight: 700;
+
+}
+#logo{
+    max-height: 100%;
+}
+
+.card:hover{
+    transform: scale(1.05);
+    transform: translateY(-10px);
+    cursor: pointer;
+    background-color:rgba(0, 55, 65, 0.8);
+    background-color: rgba(51, 44, 52, 1);
+    box-shadow: 7px 7px 5px rgba(0,0,0,0.3);
+}
+
+.container-profile-page{
+    
+    display:flex;
+    max-width:100%;
+    min-height:100vh;
+    overflow-x:hidden;
+    
+}
+.user-info{
+    min-height:100%;
+    width:18%;
+    background-color: rgba(255, 255, 255, 0.96);
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+.user-info > img{
+    width:40%;
+    border-radius:50%;
+    margin-top:20px;
+}
+.not-user-info{
+    width:82%;
+    /*margin-bottom: 20px;*/
+    
+
+}
+.user-info > #nume-prenume{
+    margin-top: 20px;
+}
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none; /* Remove underline */
+    border-radius: 50px; /* More rounded corners */
+    margin: 10px 0;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.logout-btn {
+    margin-top: 40px;
+    background-color: #e74c3c;
+    color: white;
+    border: 2px solid #e74c3c;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+.change-password-btn {
+    background-color: #0097B2;
+    color: white;
+    border: 2px solid #3498db;
+}
+
+.change-password-btn:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+.btn + .btn {
+    margin-top: 10px;
+}
+#username {
+    font-size: 24px; 
+    font-weight: 800; 
+}
+#nume-prenume {
+    font-size: 22px; 
+    font-weight: 600; 
+    color: #555; 
+}
+#email {
+    font-size: 20px; 
+    font-weight: 500; 
+    color: #777; 
+}
+.user-info {
+    margin-bottom: 0px; 
+}
+
+.behind_navbar{
+    height:60px;
+    width:100%;
+}

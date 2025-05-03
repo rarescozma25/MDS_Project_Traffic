@@ -12,6 +12,9 @@ def home(request):
     #print(settings.BASE_DIR)
     return render(request, 'home.html')
 
+def game(request):
+    return render(request, 'game.html')
+
 def profile(request):
     return render(request, 'profile.html')
 
@@ -19,8 +22,11 @@ def profile(request):
 def aboutus(request):
     return render(request, 'aboutus.html')
 
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='signup') 
+def create(request):
+    return render(request, 'create.html')
 
 def signup_view(request):
     if request.method == 'POST':

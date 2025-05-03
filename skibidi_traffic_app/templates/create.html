@@ -1,0 +1,485 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skibidi Traffic - Intersection</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/create.css' %}">
+</head>
+<body>
+    <nav>
+        <ul class="sidebar">
+            <li onclick=hideSidebar()><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></li>
+            
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'signup' %}">Sign up</a></li>
+            <li><a href="{% url 'profile' %}">My account</a></li>
+            <li><a href="{% url 'aboutus' %}">About us</a></li>
+        </ul>
+        <ul>
+            {% load static %}
+            <li><a href="{% url 'home' %}"><img id = "logo" src="{% static 'images/logo.jpg' %}" alt="SkibidiTraffic"></a></li>
+            <li class="hideOnMobile"><a href="{% url 'home' %}">Home</a></li>
+            <li class="hideOnMobile"><a href="{% url 'game' %}">Play</a> </li>
+            <li class="hideOnMobile"><a href="{% url 'create' %}">Create</a> </li>
+            {% if user.is_authenticated %}
+                <li class="hideOnMobile"><a href="{% url 'profile' %}">My account</a></li>
+                <li class="hideOnMobile"><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li class="hideOnMobile"><a href="{% url 'login' %}">Login</a></li>
+                <li class="hideOnMobile"><a href="{% url 'signup' %}">Sign up</a></li>
+            {% endif %}
+
+            <li class="hideOnMobile"><a href="{% url 'aboutus' %}">About us</a></li>
+            <li class="menu-button"onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+        </ul>
+    </nav>
+    
+    <div class="behind_navbar hideOnMobile">
+
+    </div>
+
+    <div class="drawing_container">
+        <div id="sidebar">
+            <div class="item" data-type="road_straight">🛣️ Drum Drept</div>
+            <div class="item" data-type="road_curve">↩️ Drum Curb 90°</div>
+            <label>Unghi: <input type="range" id="rotationSlider" min="0" max="360" value="0"></label>
+            <button onclick="saveToJson()">💾 Salvează JSON</button>
+            <p id="status"></p>
+        </div>
+        
+        <canvas id="canvas" width="1000" height="600"></canvas>
+    </div>
+    
+    
+    
+
+
+    <footer>
+        <p>© Skibidi Traffic 2025 - All rights reserved</p>
+    </footer>
+
+
+    <script>
+        function showSidebar(){
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'flex'
+        }
+
+        function hideSidebar(){
+            const sidebar = document.querySelector('.sidebar')
+            sidebar.style.display = 'none'
+        }
+    
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const slider = document.getElementById('rotationSlider');
+        let placedElements = [];
+        let draggedElement = null;
+        let isPlacing = false;
+        let groupCounter = 1;
+        let snapPoints = [];
+        let selectedElement = null;
+        let isDraggingSelected = false;
+        let dragOffset = { x: 0, y: 0 };
+        
+        
+        canvas.addEventListener('mousedown', e => {
+          if (selectedElement) {
+            const rect = canvas.getBoundingClientRect();
+            const pos = {
+              x: e.clientX - rect.left,
+              y: e.clientY - rect.top
+            };
+        
+            if (isPointOnElement(pos, selectedElement)) {
+              isDraggingSelected = true;
+        
+              // Calculăm offsetul inițial dintre cursor și colțul elementului
+              dragOffset.x = pos.x - selectedElement.x;
+              dragOffset.y = pos.y - selectedElement.y;
+            }
+          }
+        });
+        
+        
+        
+        
+        
+        
+        document.querySelectorAll('.item').forEach(item => {
+          item.addEventListener('click', () => {
+            const type = item.dataset.type;
+            draggedElement = {
+              type,
+              x: 0,
+              y: 0,
+              angle: parseInt(slider.value),
+              width: 50,
+              length: 100,
+              radius: 50,
+              groupId: groupCounter++
+            };
+            isPlacing = true;
+          });
+        });
+        
+        canvas.addEventListener('mousemove', e => {
+          if (isPlacing && draggedElement) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            const angle = parseInt(slider.value);
+            const angleRad = angle * Math.PI / 180;
+        
+            if (draggedElement.type === 'road_curve') {
+              // Calculăm centrul cercului astfel încât mijlocul curbei să fie sub cursor
+              const midAngleRad = angleRad + Math.PI / 4;  // 45° în radiani
+              draggedElement.x = mouseX - draggedElement.radius * Math.cos(midAngleRad);
+              draggedElement.y = mouseY - draggedElement.radius * Math.sin(midAngleRad);
+            } else {
+              // Mutăm astfel încât mijlocul drumului să fie sub cursor
+              draggedElement.x = mouseX - (draggedElement.length / 2) * Math.cos(angleRad);
+              draggedElement.y = mouseY - (draggedElement.length / 2) * Math.sin(angleRad);
+            }
+        
+            draggedElement.angle = angle;
+            redraw();
+          }
+        
+          if (isDraggingSelected && selectedElement) {
+              const rect = canvas.getBoundingClientRect();
+              const mouseX = e.clientX - rect.left;
+              const mouseY = e.clientY - rect.top;
+        
+              selectedElement.x = mouseX - dragOffset.x;
+              selectedElement.y = mouseY - dragOffset.y;
+        
+              redraw();
+            }
+        });
+        
+        // canvas.addEventListener('mouseup', () => {
+        //   isDraggingSelected = false;
+          
+        // });
+        
+        canvas.addEventListener('mouseup', () => {
+          if (isDraggingSelected && selectedElement) {
+            isDraggingSelected = false;
+            for (const sp of snapPoints) {
+              const dist = distance({ x: mouseX, y: mouseY }, sp);
+              if (dist < 15) {
+                const snap = snapToPointIfClose(selectedElement.x, selectedElement.y, selectedElement);
+                if (snap) {
+                  selectedElement.x = snap.x;
+                  selectedElement.y = snap.y;
+                  selectedElement.angle = snap.angle;
+                  selectedElement.groupId = snap.groupId;
+                }
+              }
+            }
+          }
+        
+          redraw();
+        });
+        
+        
+        
+        canvas.addEventListener('click', e => {
+          const rect = canvas.getBoundingClientRect();
+          const pos = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+          };
+        
+          if (isPlacing && draggedElement) {
+            const snap = snapToPointIfClose(pos.x, pos.y, draggedElement);
+            if (snap) {
+              draggedElement.x = snap.x;
+              draggedElement.y = snap.y;
+              draggedElement.angle = snap.angle;
+              draggedElement.groupId = snap.groupId;
+            }
+        
+            placedElements.push(draggedElement);
+            draggedElement = null;
+            isPlacing = false;
+            selectedElement = null;
+            redraw();
+            return;
+          }
+        
+          if (selectElementAtPosition(pos)) return;
+        
+        
+          // Dacă nu e nimic selectat, deselectăm
+          selectedElement = null;
+          redraw();
+        
+        
+        
+          redraw(); // deselectăm dacă am dat click pe gol
+        });
+        
+        
+        slider.addEventListener('input', () => {
+          if (draggedElement) {
+            draggedElement.angle = parseInt(slider.value);
+            redraw();
+          }
+          if (selectedElement) {
+            selectedElement.angle = parseInt(slider.value);
+            redraw();
+          }
+        });
+        
+        
+        
+        function snapToPointIfClose(mouseX, mouseY, elem) {
+          for (const sp of snapPoints) {
+            const dist = distance({ x: mouseX, y: mouseY }, sp);
+            if (dist < 15) {
+              let angle = sp.angle;
+              let finalAngle = angle;
+              let x, y;
+        
+              // dacă ne atașăm la capătul de START, inversăm direcția (rotim cu 180°)
+              if (sp.isStart) {
+                finalAngle = (angle + 180) % 360;
+              }
+        
+              const angleRad = finalAngle * Math.PI / 180;
+        
+              if (elem.type === 'road_straight') {
+                x = sp.x;
+                y = sp.y;
+              } else if (elem.type === 'road_curve') {
+                // Vrem ca startul curbei să se potrivească cu punctul de snap
+                const backAngle = (finalAngle + 90) * Math.PI / 180;
+                x = sp.x - elem.radius * Math.cos(backAngle);
+                y = sp.y - elem.radius * Math.sin(backAngle);
+              }
+        
+              return {
+                x,
+                y,
+                angle: finalAngle,
+                groupId: sp.groupId
+              };
+            }
+          }
+          return null;
+        }
+        
+        
+        
+        function drawDashedLine(x, y, angle, length) {
+          const rad = angle * Math.PI / 180;
+          for (let i = 0; i < length; i += 20) {
+            const x1 = x + i * Math.cos(rad);
+            const y1 = y + i * Math.sin(rad);
+            const x2 = x + (i + 10) * Math.cos(rad);
+            const y2 = y + (i + 10) * Math.sin(rad);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+        }
+        
+        function isPointOnElement(pos, elem) {
+          const angleRad = elem.angle * Math.PI / 180;
+          const dx = pos.x - elem.x;
+          const dy = pos.y - elem.y;
+          const localX = dx * Math.cos(-angleRad) - dy * Math.sin(-angleRad);
+          const localY = dx * Math.sin(-angleRad) + dy * Math.cos(-angleRad);
+        
+          if (elem.type === 'road_straight') {
+            return (
+              localX >= 0 &&
+              localX <= elem.length &&
+              localY >= -elem.width / 2 &&
+              localY <= elem.width / 2
+            );
+          }
+        
+          if (elem.type === 'road_curve') {
+            const r = Math.sqrt(localX * localX + localY * localY);
+            const theta = Math.atan2(localY, localX);
+            return (
+              r >= elem.radius - elem.width / 2 &&
+              r <= elem.radius + elem.width / 2 &&
+              theta >= 0 &&
+              theta <= Math.PI / 2
+            );
+          }
+        
+          return false;
+        }
+        
+        
+        function redraw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);  // Curăță canvas-ul
+          snapPoints = [];  // Golim lista de puncte de snap
+        
+          // Adăugăm punctele de snap pentru fiecare element deja plasat
+          for (const elem of placedElements) {
+            const start = getStartPoint(elem);
+            const end = getEndPoint(elem);
+            snapPoints.push({ ...start, isStart: true });
+            snapPoints.push({ ...end, isStart: false });
+          }
+        
+          // Desenăm toate elementele (drumuri și drumul în proces de plasare)
+          for (const elem of placedElements.concat(draggedElement ? [draggedElement] : [])) {
+            ctx.save();
+            ctx.translate(elem.x, elem.y);
+            ctx.rotate(elem.angle * Math.PI / 180);
+        
+            if (elem.type === 'road_straight') {
+              if (elem === selectedElement) {
+                ctx.fillStyle = '#ff0'; // fundal galben pentru evidențiere
+                ctx.fillRect(-2, -elem.width / 2 - 2, elem.length + 4, elem.width + 4);
+              }
+              ctx.fillStyle = isPlacing && elem === draggedElement ? 'lightgray' : 'gray';
+              ctx.fillRect(0, -elem.width / 2, elem.length, elem.width);
+              drawDashedLine(0, 0, 0, elem.length);
+            }
+        
+            if (elem.type === 'road_curve') {
+              if (elem === selectedElement) {
+                ctx.beginPath();
+                ctx.lineWidth = elem.width + 4;
+                ctx.strokeStyle = '#ff0'; // contur galben pentru evidențiere
+                ctx.arc(0, 0, elem.radius, 0, Math.PI / 2);
+                ctx.stroke();
+              }
+        
+              ctx.strokeStyle = isPlacing && elem === draggedElement ? 'lightgray' : 'gray';
+              ctx.lineWidth = elem.width;
+              ctx.beginPath();
+              ctx.arc(0, 0, elem.radius, 0, Math.PI / 2);
+              ctx.stroke();
+        
+              ctx.strokeStyle = 'white';
+              ctx.lineWidth = 2;
+              ctx.setLineDash([10, 10]);
+              ctx.beginPath();
+              ctx.arc(0, 0, elem.radius, 0, Math.PI / 2);
+              ctx.stroke();
+              ctx.setLineDash([]);
+            }
+        
+            ctx.restore();
+          }
+        
+          // Desenăm punctele albastre de snap
+          if (isPlacing || isDraggingSelected) {
+            for (const p of snapPoints) {
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, 8, 0, 2 * Math.PI);
+              ctx.fillStyle = 'rgba(0, 150, 255, 0.5)';
+              ctx.fill();
+            }
+          }
+        }
+        
+        function selectElementAtPosition(pos) {
+          for (let i = placedElements.length - 1; i >= 0; i--) {
+            const elem = placedElements[i];
+            if (isPointOnElement(pos, elem)) {
+              selectedElement = elem;
+              slider.value = elem.angle;
+              redraw();
+              return true;
+            }
+          }
+          selectedElement = null;
+          redraw();
+          return false;
+        }
+        
+        
+        
+        function getEndPoint(elem) {
+          const rad = elem.angle * Math.PI / 180;
+          if (elem.type === 'road_straight') {
+            return {
+              x: elem.x + elem.length * Math.cos(rad),
+              y: elem.y + elem.length * Math.sin(rad),
+              angle: elem.angle,
+              groupId: elem.groupId
+            };
+          } else if (elem.type === 'road_curve') {
+            return {
+              x: elem.x + elem.radius * Math.cos(rad ),
+              y: elem.y + elem.radius * Math.sin(rad ),
+              angle: elem.angle + 90,
+              groupId: elem.groupId
+            };
+          }
+        }
+        
+        function getStartPoint(elem) {
+          if (elem.type === 'road_straight') {
+            return {
+              x: elem.x,
+              y: elem.y,
+              angle: elem.angle,
+              groupId: elem.groupId
+            };
+          } else if (elem.type === 'road_curve') {
+            const rad = (elem.angle + 90) * Math.PI / 180;
+            return {
+              x: elem.x + elem.radius * Math.cos(rad),
+              y: elem.y + elem.radius * Math.sin(rad),
+              angle: elem.angle,
+              groupId: elem.groupId
+            };
+          }
+        }
+        
+        
+        
+        
+        function distance(p1, p2) {
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          return Math.sqrt(dx * dx + dy * dy);
+        }
+        
+        
+        function saveToJson() {
+          const grouped = {};
+          for (const elem of placedElements) {
+            if (!grouped[elem.groupId]) grouped[elem.groupId] = [];
+            grouped[elem.groupId].push(elem);
+          }
+        
+          const data = {
+            roads: Object.values(grouped).map(group => ({
+              type: "road_group",
+              parts: group.map(e => ({
+                type: e.type,
+                x: Math.round(e.x),
+                y: Math.round(e.y),
+                angle: Math.round(e.angle),
+                length: e.length || null,
+                radius: e.radius || null
+              }))
+            }))
+          };
+        
+          console.log("📦 JSON:", data);
+          document.getElementById('status').textContent = "✔ JSON în consolă (DevTools)";
+        }
+    </script>
+</body>
+</html>
