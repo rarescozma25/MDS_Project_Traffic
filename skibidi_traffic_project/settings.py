@@ -78,11 +78,14 @@ WSGI_APPLICATION = 'skibidi_traffic_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'DBSkibidiTraffic',   # numele bazei de date
-        'USER': 'cezara',      # username pt conexiunea la baza de date
-        'PASSWORD': '',
-        'HOST': 'dbskibiditraffic.czuy0482sx9l.eu-north-1.rds.amazonaws.com',  # endpoint
-        'PORT': '5432',       # portul implicit pentru PostgreSQL
+        'OPTIONS': {
+            'options': '-c search_path=django,public',  # Include schema django aici
+        },
+        'NAME': 'postgres',   # Numele bazei de date
+        'USER': 'postgres.qjtvtaymqpkfbljcnknq',
+        'PASSWORD': 'ProiectMDS123',
+        'HOST': 'aws-0-eu-central-1.pooler.supabase.com',
+        'PORT': '6543',
     }
 }
 

@@ -323,14 +323,26 @@
         </ul>
         <ul>
             {% load static %}
-            <li><a href="#"><img id = "logo" src="{% static 'images/logo.jpg' %}" alt="SkibidiTraffic"></a></li>
+            <li><a href="#"><img id="logo" src="{% static 'images/logo.jpg' %}" alt="SkibidiTraffic"></a></li>
             <li class="hideOnMobile"><a href="{% url 'home' %}">Home</a></li>
-            <li class="hideOnMobile"><a href="{% url 'login' %}">Login</a></li>
-            <li class="hideOnMobile"><a href="{% url 'signup' %}">Sign up</a></li>
-            <li class="hideOnMobile"><a href="{% url 'profile' %}">My account</a></li>
+            
+            {% if user.is_authenticated %}
+                <li class="hideOnMobile"><a href="{% url 'profile' %}">My account</a></li>
+                <li class="hideOnMobile"><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li class="hideOnMobile"><a href="{% url 'login' %}">Login</a></li>
+                <li class="hideOnMobile"><a href="{% url 'signup' %}">Sign up</a></li>
+            {% endif %}
+            
             <li class="hideOnMobile"><a href="{% url 'aboutus' %}">About us</a></li>
-            <li class="menu-button"onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
-        </ul>
+            <li class="menu-button" onclick="showSidebar()">
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
+                    </svg>
+                </a>
+            </li>
+        </ul>        
     </nav>
 
     <div class="welcome">
@@ -341,11 +353,7 @@
 
     <div class="intersectii">
         <div class="intro">
-            <h3>About us</h3>
-            <h3>We are a young team determined to solve... Our passion for A.I. and intersections brought us here! 
-                We created this amazing app... Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-                Eaque consequuntur, ab optio corrupti sed deleniti, nam deserunt consectetur libero accusamus veniam ad quidem, 
-                quasi temporibus ipsum earum voluptates culpa blanditiis! </h3>
+            <h3>Take control of your city’s traffic flow with Skibidi Traffic. Create and customize your own traffic intersections, and let AI optimize traffic light timings for efficiency. Whether you're a city planner, transportation enthusiast, or just curious, our platform allows you to experiment with real-world scenarios and see immediate results. Challenge the AI or fine-tune your settings to create the perfect traffic flow. </h3>
         </div>
         
         <h3 id="explore">Explore our intersections or create your own:</h3>
@@ -403,6 +411,7 @@
             const sidebar = document.querySelector('.sidebar')
             sidebar.style.display = 'none'
         }
+          
     </script>
 </body>
 </html>

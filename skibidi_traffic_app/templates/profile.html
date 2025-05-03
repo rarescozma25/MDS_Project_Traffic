@@ -641,6 +641,65 @@
         .user-info > #nume-prenume{
             margin-top: 20px;
         }
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none; /* Remove underline */
+            border-radius: 50px; /* More rounded corners */
+            margin: 10px 0;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        /* Specific styles for Logout button */
+        .logout-btn {
+            margin-top: 40px;
+            background-color: #e74c3c;
+            color: white;
+            border: 2px solid #e74c3c;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+        
+        .change-password-btn {
+            background-color: #0097B2;
+            color: white;
+            border: 2px solid #3498db;
+        }
+        
+        .change-password-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .btn + .btn {
+            margin-top: 10px;
+        }
+        #username {
+            font-size: 24px; 
+            font-weight: 800; 
+        }
+        #nume-prenume {
+            font-size: 22px; 
+            font-weight: 600; 
+            color: #555; 
+        }
+        #email {
+            font-size: 20px; 
+            font-weight: 500; 
+            color: #777; 
+        }
+        .user-info {
+            margin-bottom: 20px; 
+        }
+
+
     </style>
 </head>
 <body>
@@ -656,24 +715,38 @@
         </ul>
         <ul>
             {% load static %}
-            <li><a href="#"><img id = "logo" src="{% static 'images/logo.jpg' %}" alt="SkibidiTraffic"></a></li>
+            <li><a href="#"><img id="logo" src="{% static 'images/logo.jpg' %}" alt="SkibidiTraffic"></a></li>
             <li class="hideOnMobile"><a href="{% url 'home' %}">Home</a></li>
-            <li class="hideOnMobile"><a href="{% url 'login' %}">Login</a></li>
-            <li class="hideOnMobile"><a href="{% url 'signup' %}">Sign up</a></li>
-            <li class="hideOnMobile"><a href="{% url 'profile' %}">My account</a></li>
+            
+            {% if user.is_authenticated %}
+                <li class="hideOnMobile"><a href="{% url 'profile' %}">My account</a></li>
+                <li class="hideOnMobile"><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li class="hideOnMobile"><a href="{% url 'login' %}">Login</a></li>
+                <li class="hideOnMobile"><a href="{% url 'signup' %}">Sign up</a></li>
+            {% endif %}
+            
             <li class="hideOnMobile"><a href="{% url 'aboutus' %}">About us</a></li>
-            <li class="menu-button"onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
-        </ul>
+            <li class="menu-button" onclick="showSidebar()">
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                        <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
+                    </svg>
+                </a>
+            </li>
+        </ul> 
     </nav>
     <div class="container-profile-page">
-        <div class="user-info">
             {% load static %}
-            <img src="{% static 'images\no_profile_pic.jpg' %}" alt="">
-            <div id="username">{{ request.user.username }}</div>
-            <div id="nume-prenume">{{ request.user.first_name }} {{ request.user.last_name }}</div>
-            <div id="email">{{ request.user.email }}</div> 
-            <a href="{% url 'logout' %}">Logout</a>
-            <a href="{% url 'changepassword' %}">Change Password</a>
+            <div class="user-info">
+                <img src="{% static 'images\no_profile_pic.jpg' %}" alt="">
+                <div id="username" class="user-info-item">{{ request.user.username }}</div>
+                <div id="nume-prenume" class="user-info-item">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+                <div id="email" class="user-info-item">{{ request.user.email }}</div>
+            
+            <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+            <a href="{% url 'changepassword' %}" class="btn change-password-btn">Change Password</a>
+
 
         </div>
         <div class="not-user-info">

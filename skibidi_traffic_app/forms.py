@@ -3,7 +3,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm #Pt formularul de login
-from django.contrib.auth.forms import PasswordChangeForm
 
 class CustomAuthenticationForm(AuthenticationForm):
     ramane_logat = forms.BooleanField(
