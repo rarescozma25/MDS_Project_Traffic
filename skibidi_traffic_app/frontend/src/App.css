@@ -1,0 +1,68 @@
+/* src/App.css */
+.app {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.toolbar {
+  width: 220px;
+  background: #f4f4f4;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.tool-block {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tool-block h4 {
+  margin: 5px 0;
+}
+
+.tool-block label {
+  display: block;
+  font-size: 12px;
+  margin: 3px 0;
+}
+
+.tool-block input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tool-block button {
+  width: 100%;
+  margin-top: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.tool-block button.active {
+  background: #007bff;
+  color: #fff;
+}
+
+.canvas-container {
+  flex: 1;
+  background: #666;
+}
+
+.flux-panel {
+  width: 200px;
+  background: #fafafa;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.flux-block {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+input[type="range"] {
+  width: 100%;
+}

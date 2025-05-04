@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'skibidi_traffic_app',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +58,9 @@ import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'skibidi_traffic_app', 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'skibidi_traffic_app', 'templates'),
+                 BASE_DIR / 'skibidi_traffic_app' / 'frontend' / 'build',
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +72,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'skibidi_traffic_project.wsgi.application'
 
@@ -134,7 +140,7 @@ STATIC_URL = 'static/'
 from pathlib import Path  
 
 STATICFILES_DIRS = [
-    Path(BASE_DIR, "skibidi_traffic_app", "static"),  
+    BASE_DIR / 'skibidi_traffic_app' / 'frontend' / 'build' / 'static',
 ]
 
 
