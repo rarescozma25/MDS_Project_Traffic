@@ -11,9 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import os
-from dotenv import load_dotenv
-load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -79,14 +77,14 @@ WSGI_APPLICATION = 'skibidi_traffic_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':   'django.db.backends.postgresql',          
-        'NAME':     os.getenv('DB_NAME',     'postgres'),      
-        'USER':     os.getenv('DB_USER',     ''),              
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),          
-        'HOST':     os.getenv('DB_HOST',     'localhost'),  
-        'PORT':     os.getenv('DB_PORT',     '5432'),          
+        'ENGINE':   'django.db.backends.postgresql',
+        'NAME':     'postgres',
+        'USER':     'postgres.qjtvtaymqpkfbljcnknq',
+        'PASSWORD': 'ProiectMDS123',
+        'HOST':     'aws-0-eu-central-1.pooler.supabase.com',
+        'PORT':     '6543',
         'OPTIONS': {
-            'options': '-c search_path=django,public',    
+            'options': '-c search_path=django,public',
         },
     }
 }
