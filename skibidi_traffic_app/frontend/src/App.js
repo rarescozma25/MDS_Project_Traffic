@@ -12,7 +12,7 @@ const CENTER_Y = HEIGHT / 2;
 const LANE_OFFSET = ROAD_WIDTH / 4;
 const DASH = [10, 10];
 
-// Definirea benzilor (circulație pe dreapta)
+// Configurare drumuri și benzi
 const LANES = [
   { id: 'E', path: [0, CENTER_Y + LANE_OFFSET, WIDTH, CENTER_Y + LANE_OFFSET] },
   { id: 'W', path: [WIDTH, CENTER_Y - LANE_OFFSET, 0, CENTER_Y - LANE_OFFSET] },
@@ -20,8 +20,38 @@ const LANES = [
   { id: 'N', path: [CENTER_X + LANE_OFFSET, HEIGHT, CENTER_X + LANE_OFFSET, 0] }
 ];
 
-// Calculează poziția și unghiul pe un path
+const PRIORITY_MAP = { //pentru prioritate dreapta
+  N: 'W', 
+  E: 'N',  
+  S: 'E',  
+  W: 'S'   
+};
+
+const STOP_OFFSET = 20; 
+const STOP_POSITIONS = { // coordonatele unde se plaseaza semafoarele
+  E: {
+    x: CENTER_X - ROAD_WIDTH/2 - STOP_OFFSET,   
+    y: CENTER_Y + LANE_OFFSET
+  },
+  W: {
+    x: CENTER_X + ROAD_WIDTH/2 + STOP_OFFSET,   
+    y: CENTER_Y - LANE_OFFSET
+  },
+  S: {
+    x: CENTER_X - LANE_OFFSET,               
+    y: CENTER_Y - ROAD_WIDTH/2 - STOP_OFFSET
+  },
+  N: {
+    x: CENTER_X + LANE_OFFSET,                
+    y: CENTER_Y + ROAD_WIDTH/2 + STOP_OFFSET
+  }
+};
+
+
+
+
 function getPos(points, prog) {
+  if (prog>1) return null;
   let total = 0;
   const segs = [];
   for (let i = 0; i < points.length - 2; i += 2) {
@@ -47,18 +77,29 @@ function getPos(points, prog) {
 }
 
 export default function App() {
-  // Configurație inițială: verde/roșu și flux vehicule/minut
+//configurarea initiala semafoarelor
   const initialConfig = LANES.reduce((acc, lane) => {
     acc[lane.id] = { green: 5000, red: 5000, flow: 5 };
     return acc;
   }, {});
   const [config, setConfig] = useState(initialConfig);
 
-  const [lights, setLights] = useState([]);       // semafoare adăugate de utilizator
-  const [cars, setCars]     = useState([]);       // lista de mașini în scenă
-  const [placingDir, setPlacingDir] = useState(null); // direcție selectată pentru plasare semafor
+  const [lights, setLights] = useState([]);       
+  const [cars, setCars]     = useState([]);      
+  const [placingDir, setPlacingDir] = useState(null); 
+  const [passedCount, setPassedCount] = useState(0);
+  useEffect(() => {
+    localStorage.setItem('passedCount', '0');
+  }, []);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setPassedCount(parseInt(localStorage.getItem('passedCount') || '0', 10));
+    }, 500);
+    return () => clearInterval(id);
+  }, []);
 
-  // Generare mașini conform fluxului pe fiecare bandă
+
+  // generare masini la intervalul setat de user
   useEffect(() => {
     const intervals = LANES.map(lane => {
       const ms = 60000 / config[lane.id].flow;
@@ -67,16 +108,23 @@ export default function App() {
     return () => intervals.forEach(clearInterval);
   }, [config]);
 
-  // Funcție de adăugare mașină
+  //functia de adaugare masini
   const addCar = laneId => {
     const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
     setCars(prev => [
       ...prev,
-      { id: Date.now() + Math.random(), laneId, progress: 0, speed: 0.002 + Math.random() * 0.002, color }
+      {
+        id: Date.now() + Math.random(),
+        laneId,
+        progress: 0,
+        speed: 0.002 + Math.random() * 0.002,
+        color,
+        waitTime: 0
+      }
     ]);
   };
 
-  // Ticker comun pentru semafoare (100ms)
+  //animatia semaforului
   useEffect(() => {
     const tick = setInterval(() => {
       setLights(prev =>
@@ -95,52 +143,159 @@ export default function App() {
     return () => clearInterval(tick);
   }, [config]);
 
-  // Animație mașini: respectă semafoarele, evită coliziunile și dispar la capăt
+//animatii pentru masini
   useEffect(() => {
-    const iv = setInterval(() => {
+    const STEP = 16;
+    const interval = setInterval(() => {
       setCars(prevCars =>
-        prevCars
-          .map(car => {
-            const lane = LANES.find(l => l.id === car.laneId);
-            const pos = getPos(lane.path, car.progress);
-            let stop = false;
-            lights
-              .filter(l => l.laneId === car.laneId)
-              .forEach(lt => {
-                const d = Math.hypot(pos.x - lt.x, pos.y - lt.y);
-                if (d < 20 && lt.state === 'red') stop = true;
-              });
-            const ahead = prevCars.find(
-              o => o.laneId === car.laneId && o.progress > car.progress && o.progress - car.progress < 0.05
-            );
-            if (stop || ahead) return car;
-            const np = car.progress + car.speed;
-            if (np > 1) return null;   // dispariție la capăt
-            return { ...car, progress: np };
-          })
-          .filter(c => c)
-      );
-    }, 16);
-    return () => clearInterval(iv);
-  }, [lights]);
+        prevCars.map(car => {
+          const lane = LANES.find(l => l.id === car.laneId);
+          const cur = car.progress;
+          const next = cur + car.speed;
+          const curPos = getPos(lane.path, cur);
+          const nextPos = getPos(lane.path, next);
+          if (!curPos || !nextPos) return null;
 
+          //zonele de intersecție
+          const APPROACH_ZONE = 0.35;
+          const INTERSECTION_START = 0.4;
+          const INTERSECTION_END = 0.65;
+          const EXIT_ZONE = 0.85;
+          if (cur < EXIT_ZONE && next >= EXIT_ZONE) {
+                const prev = parseInt(localStorage.getItem('passedCount') || '0', 10);
+                localStorage.setItem('passedCount', (prev + 1).toString());
+              }
+          //daca ai iesit din intersecție, du-te mai departe
+          if (cur >= EXIT_ZONE) {
+            return next > 1
+              ? null
+              : { ...car, progress: next, waitTime: 0 };
+          }
+
+          let stop = false;
+          const light = lights.find(l => l.laneId === car.laneId);
+          const hasLight = Boolean(light);
+          const isRed = hasLight && light.state === 'red';
+          const nearLight =
+            hasLight &&
+            Math.hypot(nextPos.x - light.x, nextPos.y - light.y) < 20;
+
+          //1)rosu la semafor
+          if (isRed && nearLight) {
+            stop = true;
+          }
+
+           //2) verificare intersecție
+          const entering = cur < INTERSECTION_START && next >= INTERSECTION_START;
+          const inApproach = cur >= APPROACH_ZONE && cur < INTERSECTION_START;
+          const rightLane = PRIORITY_MAP[car.laneId];
+
+          // 3) Vehicule CU semafor verde: verificare continuă de prioritate de dreapta și eliberare intersecție
+          if (hasLight && light.state === 'green' && (inApproach || entering)) {
+            // A) vehicule semaforizate cu verde pe dreapta
+            const rightGreen = prevCars.some(o => {
+              const sl = lights.find(l => l.laneId === o.laneId);
+              return (
+                o.laneId === rightLane &&
+                sl?.state === 'green' &&
+                ((o.progress > APPROACH_ZONE && o.progress < INTERSECTION_END) ||
+                  (o.progress >= INTERSECTION_END && o.progress < EXIT_ZONE))
+              );
+            });
+            // B) vehicule fără semafor deja în intersecție
+            const nonPriorityInInt = prevCars.some(o =>
+              !lights.some(l => l.laneId === o.laneId) &&
+              o.progress > INTERSECTION_START &&
+              o.progress < INTERSECTION_END
+            );
+            if (rightGreen || nonPriorityInInt) {
+              stop = true;
+            }
+          }
+
+          // 4) Vehicule FĂRĂ semafor: blochează cât timp există semafor verde, apoi dreptul de dreapta
+          if (!hasLight && inApproach) {
+            const anyGreen = prevCars.some(o => {
+              const sl = lights.find(l => l.laneId === o.laneId);
+              return (
+                sl?.state === 'green' &&
+                ((o.progress > INTERSECTION_START && o.progress < INTERSECTION_END) ||
+                  (o.progress >= INTERSECTION_END && o.progress < EXIT_ZONE))
+              );
+            });
+            if (anyGreen) {
+              stop = true;
+            } else {
+              const rightNoLight = prevCars.some(o =>
+                o.laneId === rightLane &&
+                !lights.some(l => l.laneId === o.laneId) &&
+                o.progress >= APPROACH_ZONE &&
+                o.progress < INTERSECTION_END
+              );
+              if (rightNoLight) {
+                stop = true;
+              }
+            }
+          }
+
+          // 5) Coliziune cu vehicul din față
+          const ahead = prevCars.find(
+            o => o.laneId === car.laneId && o.progress > cur && o.progress - cur < 0.05
+          );
+          if (ahead) {
+            stop = true;
+          }
+
+          // 6) Decizie finală
+          if (stop) {
+            const newWait = car.waitTime + STEP;
+            if (hasLight) {
+              // doar semaforizatele pot forța trecerea după 2s
+              if (newWait > 2000) {
+                return { ...car, progress: next, waitTime: 0 };
+              }
+              return { ...car, waitTime: newWait };
+            }
+            // non-semafor: rămâi blocat
+            return { ...car, waitTime: newWait };
+          }
+
+          // dacă nu se oprește, avansează
+          return next > 1
+            ? null
+            : { ...car, progress: next, waitTime: 0 };
+        }).filter(Boolean)
+      );
+    }, STEP);
+    return () => clearInterval(interval);
+  }, [lights]);
+  
   // Ștergerea semaforului la click stânga
   const removeLight = id => setLights(prev => prev.filter(l => l.id !== id));
 
-  // Plasarea semaforului pe canvas
-  const handleCanvasClick = e => {
+  const handleCanvasClick = () => {
     if (!placingDir) return;
-    const { offsetX: x, offsetY: y } = e.evt;
+    const { x, y } = STOP_POSITIONS[placingDir];
     setLights(prev => [
       ...prev,
-      { id: 'L' + Date.now(), laneId: placingDir, x, y, state: 'red', remaining: config[placingDir].red }
+      {
+        id: 'L' + Date.now(),
+        laneId: placingDir,
+        x, y,
+        state: 'red',
+        remaining: config[placingDir].red
+      }
     ]);
     setPlacingDir(null);
   };
+  
 
   return (
-    <div className="app">
-      {/* Toolbar semafoare */}
+    <div className="app" style={{ position: 'relative' }}>
+      {/*Toolbar semafoare*/}
+      <div style={{ position: 'absolute', top: 10, left: 350, zIndex: 1000, background: '#4e4e4e', color:'#ccc',padding: '5px 10px', borderRadius: '4px', boxShadow: '0 0 5px rgba(0,0,0,0.3)' }}>
+        Mașini trecute: {passedCount}
+      </div>
       <div className="toolbar">
         <h2>Semafoare</h2>
         {LANES.map(lane => (
@@ -182,7 +337,7 @@ export default function App() {
         ))}
       </div>
 
-      {/* Canvas intersecție */}
+      {/*Desenare intersectie*/}
       <div className="canvas-container">
         <Stage width={WIDTH} height={HEIGHT} onClick={handleCanvasClick}>
           <Layer>
@@ -195,7 +350,7 @@ export default function App() {
               height={HEIGHT}
               fill="#333"
             />
-            {/* Marcaje (discontinuu → continuu → discontinuu) */}
+            {/*Marcajele*/}
             {[
               [[0, CENTER_Y], [200, CENTER_Y], DASH],
               [[200, CENTER_Y], [600, CENTER_Y], []],
@@ -213,7 +368,7 @@ export default function App() {
               />
             ))}
 
-            {/* Zone invizibile pentru adăugare mașini */}
+            {/*Zona unde se spawnneaza masinile*/}
             {LANES.map(lane => (
               <Line
                 key={lane.id}
@@ -224,7 +379,7 @@ export default function App() {
               />
             ))}
 
-            {/* Semafoare */}
+            {/*Semafoare*/}
             {lights.map(light => (
               <Group
                 key={light.id}
@@ -246,7 +401,7 @@ export default function App() {
               </Group>
             ))}
 
-            {/* Mașini */}
+            {/* Masini*/}
             {cars.map(car => {
               const lane = LANES.find(l => l.id === car.laneId);
               const pos = getPos(lane.path, car.progress);
@@ -258,7 +413,7 @@ export default function App() {
                   y={pos.y}
                   rotation={(pos.angle * 180) / Math.PI}
                 >
-                  {/* Caroserie */}
+                  {/* Caroserie*/}
                   <Rect
                     width={24}
                     height={12}
@@ -266,7 +421,7 @@ export default function App() {
                     fill={car.color}
                     cornerRadius={2}
                   />
-                  {/* Parbriz */}
+                  {/* Tenativa parbriz */}
                   <Rect
                     width={8}
                     height={4}
@@ -281,7 +436,7 @@ export default function App() {
         </Stage>
       </div>
 
-      {/* Panou flux vehicule/minut */}
+      {/* Setare flux vehicule/minut */}
       <div className="flux-panel">
         <h2>Flux vehicule/min</h2>
         {LANES.map(lane => (
@@ -292,7 +447,7 @@ export default function App() {
             <input
               type="range"
               min="1"
-              max="60"
+              max="20"
               value={config[lane.id].flow}
               onChange={e =>
                 setConfig(c => ({
