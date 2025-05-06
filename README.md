@@ -1,5 +1,7 @@
 # MDS_Project_Traffic
 
+Prezentare: https://www.canva.com/design/DAGmksTS4iM/UJdUiQQjjAkTS2DPTbOH7w/edit?utm_content=DAGmksTS4iM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
 Comanda necesara pt a da run:
 
 pip install djangorestframework
