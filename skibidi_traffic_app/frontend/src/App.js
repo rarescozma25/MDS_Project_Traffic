@@ -342,31 +342,27 @@ export default function App() {
         <Stage width={WIDTH} height={HEIGHT} onClick={handleCanvasClick}>
           <Layer>
             {/* Drumuri */}
-            <Rect x={0} y={CENTER_Y - ROAD_WIDTH / 2} width={WIDTH} height={ROAD_WIDTH} fill="#333" />
+            <Rect x={0} y={CENTER_Y - ROAD_WIDTH / 2} width={WIDTH} height={ROAD_WIDTH} fill="#444" />
             <Rect
               x={CENTER_X - ROAD_WIDTH / 2}
               y={0}
               width={ROAD_WIDTH}
               height={HEIGHT}
-              fill="#333"
+              fill="#444"
             />
-            {/*Marcajele*/}
-            {[
-              [[0, CENTER_Y], [200, CENTER_Y], DASH],
-              [[200, CENTER_Y], [600, CENTER_Y], []],
-              [[600, CENTER_Y], [WIDTH, CENTER_Y], DASH],
-              [[CENTER_X, 0], [CENTER_X, 200], DASH],
-              [[CENTER_X, 200], [CENTER_X, 400], []],
-              [[CENTER_X, 400], [CENTER_X, HEIGHT], DASH]
-            ].map((seg, i) => (
-              <Line
-                key={i}
-                points={[...seg[0], ...seg[1]]}
-                stroke="#fff"
-                strokeWidth={2}
-                dash={seg[2]}
-              />
-            ))}
+            
+            {/* Marcaje simple: linii centrale orizontală și verticală */}
+<Line
+  points={[0, CENTER_Y, WIDTH, CENTER_Y]}
+  stroke="#fff"
+  strokeWidth={4}
+/>
+<Line
+  points={[CENTER_X, 0, CENTER_X, HEIGHT]}
+  stroke="#fff"
+  strokeWidth={4}
+/>
+
 
             {/*Zona unde se spawnneaza masinile*/}
             {LANES.map(lane => (
