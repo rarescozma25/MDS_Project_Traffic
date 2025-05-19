@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skibidi Traffic - Intersection</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/create.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/create2.css' %}?v={{ timestamp }}">
     
 </head>
 <body>
@@ -44,48 +44,80 @@
 
     </div>
 
-    <div class="drawing_container">
+    <div id="drawing_container">
         <div id="sidebar">
-          {% comment %}
-            {% load static %}
-            <div class="item" data-type="road_straight"><img src="{% static 'images/roads_icons/drept.png' %}" alt=""></div>
-            {% load static %}
-            <div class="item" data-type="road_curve"><img src="{% static 'images/roads_icons/curb90.png' %}" alt=""></div>
-            <label>Direcție:
-              <select id="curveDirection">
-                <option value="right">Dreapta</option>
-                <option value="left">Stânga</option>   
-              </select>
-            </label>
-            {% endcomment %}
-            <div class="item" data-type="road_cross"><img src="{% static 'images/roads_icons/intersectie.png' %}" alt=""></div>
-            {% comment %}
-            <div class="item" data-type="roundabout"><img src="{% static 'images/roads_icons/giratoriu.png' %}" alt=""></div>
-            <label>Ieșiri: <input type="number" id="exitCount" min="3" max="8" value="4"></label>
-            <label>Unghi: <input type="range" id="rotationSlider" min="0" max="360" value="0"></label> {% endcomment %}
-            <button onclick="saveToJson()">💾 Salvează JSON</button>
-            <p id="status"></p>
+            <div id="title_sidebar">Panou de control <br> adaugare elemente</div>
+            <div id="butoane_elemente">
+                <div class="item" ><img src="{% static 'images/roads_icons/intersectie.png' %}" alt=""></div>
+                <div class="item" id="intersectieCustom">Intersectie custom</div>
+                
+                <div class="item" id="adaugaStradaBtn">Adauga strada</div>
+                
+                <button id="saveToJSON" onclick="saveToJson()">💾 Salvează JSON</button>
+                
+                <button id = "loadImage" >Încarcă o imagine</button>
+            </div>
+            
+            
         </div>
-        
-        <canvas id="canvas" width="1000" height="600"></canvas>
+
+        <input type="file" id="imageLoader" accept="image/*" style="display:none" />
+        <canvas id="canvas" ></canvas> 
+        <div id="sidebar2">
+            <div id="title_sidebar2">Panou de control <br> componente discrete</div>
+            <div id="sectiuneIntersectie">Intersectie:</div>
+            <div class="item2" id="lungimeLatura">
+                <label for="lungimeLaturaInput">Lungime latura:</label>
+                <input type="number" id="lungimeLaturaInput" min="1" step="10">
+            </div>
+            <div class="item2" id="unghiLaturaOx">
+                <label for="unghiLaturaOxInput">∠ (latura, Ox):</label>
+                <input type="number" id="unghiLaturaOxInput" min="0" max="360" step="1">
+            </div>
+            <div class="item2" id="unghiIntreLaturi">
+                <label for="unghiIntreLaturiInput">∠ (lat', lat):</label>
+                <input type="number" id="unghiIntreLaturiInput">
+            </div>
+            <div id="sectiuneStrada">Strada:</div>
+            <div class="item2" id="laneControlsIN">
+                <label for="">Nr. benzi IN:</label>
+                <div class="butoaneBenzi">
+                    <button id="btnIncrementeazaIn">+</button>
+                    <button id="btnDecrementeazaIn">−</button>
+                </div>
+                
+                
+            </div>
+            <div class="item2" id="laneControlsOUT">
+                <label for="">Nr. benzi OUT:</label>
+                <div class="butoaneBenzi">
+                    <button id="btnIncrementeazaOUT">+</button>
+                    <button id="btnDecrementeazaOUT">−</button>
+                </div>
+            </div>
+            <div class="item2" id="punctConectareStradaPeLatura">
+                <label for="pozitieConectareInput">Poziție pe latură:</label>
+                <input type="number" id="pozitieConectareInput" step="0.01" min="0" max="1" value="0.5">
+            </div>
+            <div class="item2" id="lungimeStrada">
+                <label for="inputLungimeStrada">Lungime (m):</label>
+                <input type="number" id="inputLungimeStrada" min="5" max="500" step="0.5">
+            </div>
+            <div class="item2" id="trecerePietoni">
+                <label for="checkboxTrecre">Trecere pietoni: </label>
+                <input type="checkbox" id="checkboxTrecere">
+            </div>
+        </div>
 
         
         
     </div>
     
-    
-    <!--Dima: adaugare optiune latire drum-->
-    {% comment %} <div id="laneControls" style="position:absolute; display:none; gap: 6px; z-index:1000; flex-direction:row;">
-      <button onclick="increaseLanes()" style="width:24px;height:24px;">+</button>
-      <button onclick="decreaseLanes()" style="width:24px;height:24px;">−</button>
-    </div> {% endcomment %}
-
-
     <footer>
         <p>© Skibidi Traffic 2025 - All rights reserved</p>
     </footer>
 
-
-    <script src="{% static 'create.js' %}"></script>
+    {%load static%}
+    <script type="module" src="{% static 'create.js' %}?v={{ timestamp }}"></script> 
 </body>
 </html>
