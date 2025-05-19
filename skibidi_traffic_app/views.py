@@ -24,9 +24,12 @@ def aboutus(request):
 
 from django.contrib.auth.decorators import login_required
 
-@login_required(login_url='signup') 
+from django.utils.timezone import now
+@login_required(login_url='login') 
 def create(request):
-    return render(request, 'create.html')
+    return render(request, 'create.html', {
+        'timestamp': now().timestamp(),  # sau int(time.time())
+    })
 
 def signup_view(request):
     if request.method == 'POST':
