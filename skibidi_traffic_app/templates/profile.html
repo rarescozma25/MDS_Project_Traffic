@@ -72,7 +72,19 @@
                 
                 <h3 id="explore">Here is where you can create and save your work!</h3>
                 <div class="intersectii-cards">
-                    <div class="card">
+                    {% for intersectie in intersectii %}
+                        <div class="card">
+                            <a href="{% url 'create' %}?id={{ intersectie.id }}" style="display: flex;flex-direction: column;justify-content:center;align-items:center;text-decoration: none;">
+                                {% load static %}
+                                <img class="img_card" src="{% static 'images/test_intersectie_negru.jpg' %}" style="max-width: 90%;border-radius: 50%;">
+                                <p>{{ intersectie.nume }}</p>
+                            </a>
+                        </div>
+                    {% empty %}
+                        <p>Nu ai salvat încă nicio intersecție.</p>
+                    {% endfor %}
+
+                    {% comment %} <div class="card">
                         <!--de rezolvat!!!!-->
                         {% load static %}
                         <img src="{% static 'images/test_intersectie_negru.jpg' %}">
@@ -115,7 +127,7 @@
                         {% load static %}
                         <img src="{% static 'images/test_intersectie_negru.jpg' %}">
                         <p>Custom</p>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div> 
             

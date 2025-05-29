@@ -11,6 +11,7 @@ export default class Intersectie {
     this.listaVarfuri = listaVarfuri; // array de Punct
     this.listaStrazi = listaStrazi; // 
     this.selected = false; //daca e selectata pe canvas sau nu
+    this.trasee = []; // Lista de trasee definită de utilizator
 
   }
 

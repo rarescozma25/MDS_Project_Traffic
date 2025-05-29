@@ -1,5 +1,4 @@
 {%load static%}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,8 @@
     <title>Skibidi Traffic - Intersection</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/create2.css' %}?v={{ timestamp }}">
-    
+    {% csrf_token %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
 </head>
 <body>
     <nav>
@@ -53,8 +53,8 @@
                 
                 <div class="item" id="adaugaStradaBtn">Adauga strada</div>
                 
-                <button id="saveToJSON" onclick="saveToJson()">💾 Salvează JSON</button>
-                
+                <button id="saveToJSON" type="button">💾 Salvează JSON</button>
+                <button id="simuleazaTrafic" type="button">🚦 Simulează trafic</button>
                 <button id = "loadImage" >Încarcă o imagine</button>
             </div>
             
@@ -107,6 +107,8 @@
                 <label for="checkboxTrecre">Trecere pietoni: </label>
                 <input type="checkbox" id="checkboxTrecere">
             </div>
+            <button class="item" id="btnDefineRoute">🛣️ Definește traseu</button>
+
         </div>
 
         

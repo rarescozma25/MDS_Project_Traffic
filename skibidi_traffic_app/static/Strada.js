@@ -24,7 +24,7 @@ export default class Strada {
   }
 
   getPunctConectare() {
-    console.log("1\n");
+    // console.log("1\n");
     const A = this.intersectie.listaVarfuri[this.indexLatura];
     const B = this.intersectie.listaVarfuri[(this.indexLatura + 1) % this.intersectie.listaVarfuri.length];
     return new Punct(
@@ -33,14 +33,6 @@ export default class Strada {
     );
   }
 
-  // getVectorDirectie() {
-  //   const A = this.intersectie.listaVarfuri[this.indexLatura];
-  //   const B = this.intersectie.listaVarfuri[(this.indexLatura + 1) % this.intersectie.listaVarfuri.length];
-  //   const dx = B.x - A.x;
-  //   const dy = B.y - A.y;
-  //   const len = Math.sqrt(dx * dx + dy * dy);
-  //   return { x: dy / len, y: -dx / len }; // perpendicular la latură
-  // }
 
   getVectorDirectie() {
     const A = this.intersectie.listaVarfuri[this.indexLatura];
@@ -51,7 +43,7 @@ export default class Strada {
 
    let vx = dy / len;
   let vy = -dx / len;
-    console.log("dhhfhf");
+    //console.log("dhhfhf");
   // console.log("CCW:", this.intersectie.isCounterClockwise());
 
   // if (this.intersectie.isCounterClockwise()) {
@@ -148,76 +140,6 @@ export default class Strada {
 }
 
 
-// deseneazaTrecere(ctx, pStart, dir, perp) {
-//   const lungime = 30; // lungimea dungilor pe direcția drumului
-//   const dungaLatime = 4;
-//   const spatiuIntre = 6;
-
-//   const offsetStanga = this.benziIn * this.latimeBanda + this.spatiuVerde / 2;
-//   const offsetDreapta = this.benziOut * this.latimeBanda + this.spatiuVerde / 2;
-
-//   const totalLatime = offsetStanga + offsetDreapta;
-//   const numDungi = Math.floor(totalLatime / (dungaLatime + spatiuIntre));
-
-//   for (let i = 0; i < numDungi; i++) {
-//     const offset = -offsetStanga + i * (dungaLatime + spatiuIntre) + dungaLatime / 2;
-
-//     const a = {
-//       x: pStart.x + perp.x * offset+ dir.x * 3,
-//       y: pStart.y + perp.y * offset+ dir.y * 3
-//     };
-//     const b = {
-//       x: a.x + dir.x * lungime,
-//       y: a.y + dir.y * lungime
-//     };
-
-//     ctx.beginPath();
-//     ctx.moveTo(a.x, a.y);
-//     ctx.lineTo(b.x, b.y);
-//     ctx.strokeStyle = "white";
-//     const vechiulWidth = ctx.lineWidth;
-//     ctx.lineWidth = dungaLatime;
-//     ctx.stroke();
-//     ctx.lineWidth = vechiulWidth;
-//   }
-// }
-
-// deseneazaTrecere(ctx, pStart, dir, perp) {
-//   const lungime = 30; // cât de mult se întinde o dungă în direcția drumului
-//   const dungaLatime = 4;
-//   const spatiuIntre = 6;
-//   const offsetInitial = 6; // distanța față de marginea stângă a străzii
-
-//   const offsetStanga = this.benziIn * this.latimeBanda + this.spatiuVerde / 2;
-//   const offsetDreapta = this.benziOut * this.latimeBanda + this.spatiuVerde / 2;
-
-//   const totalLatime = offsetStanga + offsetDreapta;
-
-//   const usableLatime = totalLatime - 2 * offsetInitial;
-//   const numDungi = Math.floor(usableLatime / (dungaLatime + spatiuIntre));
-
-//   for (let i = 0; i < numDungi; i++) {
-//     const offset = -offsetStanga + offsetInitial + i * (dungaLatime + spatiuIntre) + dungaLatime / 2;
-
-//     const a = {
-//       x: pStart.x + perp.x * offset + dir.x * 3,
-//       y: pStart.y + perp.y * offset + dir.y * 3
-//     };
-//     const b = {
-//       x: a.x + dir.x * lungime,
-//       y: a.y + dir.y * lungime
-//     };
-
-//     ctx.beginPath();
-//     ctx.moveTo(a.x, a.y);
-//     ctx.lineTo(b.x, b.y);
-//     ctx.strokeStyle = "white";
-//     const vechiulWidth = ctx.lineWidth;
-//     ctx.lineWidth = dungaLatime;
-//     ctx.stroke();
-//     ctx.lineWidth = vechiulWidth;
-//   }
-// }
 
 deseneazaTrecere(ctx, pStart, dir, perp) {
   const lungime = 30;

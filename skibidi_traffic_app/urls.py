@@ -11,6 +11,10 @@ urlpatterns = [
     path('changepassword', views.change_password_view, name='changepassword'),
     path('game', views.game, name='game'),
     path('create', views.create, name='create'),
+    path('saved/', views.salvare_intersectie, name='saved'),
+    path('incarca/<uuid:id>/', views.incarca_intersectie, name='incarca'),
+    path('simuleaza/', views.simuleaza_intersectie, name='simuleaza'),
+
 ]
 
 from django.conf import settings
