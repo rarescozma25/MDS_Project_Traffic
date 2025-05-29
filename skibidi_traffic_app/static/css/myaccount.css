@@ -140,7 +140,8 @@ footer{
     margin:20px;
     /*background-color: #2C3E50;*/
     width:250px;
-    height:auto;
+    height:250px;
+    
     border-radius:30px;
     display:flex;
     flex-direction: column;
@@ -151,9 +152,14 @@ footer{
     transition: transform 0.3s ease-in;
     box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
 }
-
-.card > img{
-    max-width:90%;
+.card a{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align:center;
+} 
+.img_card{
+    /*max-width:90%;*/
     border-radius: 50%;
     
 }
